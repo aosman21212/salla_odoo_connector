@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- ── Top-level Salla menu ───────────────────────────────────────────────── -->
+    <menuitem
+        id="menu_salla_root"
+        name="Salla Connector"
+        sequence="80"
+        web_icon="salla_odoo_connector,static/description/icon.png"/>
+
+    <!-- ── Configuration sub-menu ────────────────────────────────────────────── -->
+    <menuitem
+        id="menu_salla_configuration"
+        name="Configuration"
+        parent="menu_salla_root"
+        sequence="10"/>
+
+    <menuitem
+        id="menu_salla_instances"
+        name="Salla Instances"
+        parent="menu_salla_configuration"
+        action="action_salla_instance_list"
+        sequence="10"/>
+
+    <menuitem
+        id="menu_salla_brands"
+        name="Brands"
+        parent="menu_salla_configuration"
+        action="action_salla_brand_list"
+        sequence="20"/>
+
+    <menuitem
+        id="menu_salla_order_statuses"
+        name="Order Statuses"
+        parent="menu_salla_configuration"
+        action="action_salla_order_status_list"
+        sequence="30"/>
+
+    <!-- ── Data sub-menus ─────────────────────────────────────────────────────── -->
+    <menuitem
+        id="menu_salla_customers"
+        name="Customers"
+        parent="menu_salla_root"
+        sequence="20"
+        action="contacts.action_contacts"/>
+
+    <menuitem
+        id="menu_salla_products"
+        name="Products"
+        parent="menu_salla_root"
+        sequence="30"
+        action="product.product_template_action_all"/>
+
+    <menuitem
+        id="menu_salla_orders"
+        name="Orders"
+        parent="menu_salla_root"
+        sequence="40"
+        action="sale.action_quotations_with_onboarding"/>
+
+</odoo>

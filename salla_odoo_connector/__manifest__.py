@@ -1,0 +1,46 @@
+{
+    'name': 'Salla Odoo Connector',
+    'version': '19.0.1.0.0',
+    'summary': 'Sync Salla eCommerce with Odoo | مزامنة سلة مع أودو',
+    'description': '''
+Bidirectional integration between Salla eCommerce platform and Odoo 19.
+Import/export customers, products, orders, categories and more.
+    ''',
+    'author': 'leapai.ai',
+    'website': 'https://leapai.ai',
+    'maintainer': 'a.osman@bab.com.sa',
+    'support': 'abdzoro89@gmail.com',
+    'category': 'eCommerce/eCommerce',
+    'license': 'LGPL-3',
+    'depends': [
+        'sale_management',
+        'stock',
+        'contacts',
+        'account',
+    ],
+    'data': [
+        'security/ir.model.access.csv',
+        'data/ir_cron_data.xml',
+        'views/salla_instance_views.xml',
+        'views/salla_brand_views.xml',
+        'views/salla_order_status_views.xml',
+        'views/res_partner_views.xml',
+        'views/product_template_views.xml',
+        'views/sale_order_views.xml',
+        'wizard/salla_import_wizard_views.xml',
+        'wizard/salla_scheduler_wizard_views.xml',
+        'views/menu_views.xml',
+    ],
+    'images': [
+        'static/description/icon.png',
+        'static/description/screenshot_01_instance.png',
+        'static/description/screenshot_02_import_wizard.png',
+        'static/description/screenshot_03_contact.png',
+        'static/description/screenshot_04_product.png',
+        'static/description/screenshot_05_order.png',
+        'static/description/screenshot_06_scheduler.png',
+    ],
+    'installable': True,
+    'application': True,
+    'auto_install': False,
+}

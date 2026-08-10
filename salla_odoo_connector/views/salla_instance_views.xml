@@ -1,0 +1,245 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- ── List view ─────────────────────────────────────────────────────────── -->
+    <record id="view_salla_instance_list" model="ir.ui.view">
+        <field name="name">salla.instance.list</field>
+        <field name="model">salla.instance</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="name"/>
+                <field name="salla_store_name"/>
+                <field name="salla_store_email"/>
+                <field name="salla_store_currency"/>
+                <field name="state" widget="badge"
+                       decoration-success="state == 'connected'"
+                       decoration-warning="state == 'expired'"
+                       decoration-muted="state == 'draft'"/>
+                <field name="product_count"/>
+                <field name="customer_count"/>
+                <field name="order_count"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- ── Form view ─────────────────────────────────────────────────────────── -->
+    <record id="view_salla_instance_form" model="ir.ui.view">
+        <field name="name">salla.instance.form</field>
+        <field name="model">salla.instance</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                    <button name="action_get_token"
+                            type="object"
+                            string="🔑 Get Token"
+                            class="btn-primary"
+                            invisible="state == 'connected'"/>
+                    <button name="action_refresh_token"
+                            type="object"
+                            string="🔄 Refresh Token"
+                            class="btn-secondary"
+                            invisible="state != 'connected'"/>
+                    <button name="action_test_connection"
+                            type="object"
+                            string="✅ Test Connection"
+                            class="btn-secondary"
+                            invisible="not access_token"/>
+                    <field name="state" widget="statusbar"
+                           statusbar_visible="draft,connected"/>
+                </header>
+
+                <sheet>
+                    <!-- Smart buttons -->
+                    <div name="button_box" class="oe_button_box">
+                        <button name="action_view_products"
+                                type="object"
+                                class="oe_stat_button"
+                                icon="fa-cube"
+                                invisible="product_count == 0">
+                            <field name="product_count" widget="statinfo" string="Products"/>
+                        </button>
+                        <button name="action_view_customers"
+                                type="object"
+                                class="oe_stat_button"
+                                icon="fa-users"
+                                invisible="customer_count == 0">
+                            <field name="customer_count" widget="statinfo" string="Customers"/>
+                        </button>
+                        <button name="action_view_orders"
+                                type="object"
+                                class="oe_stat_button"
+                                icon="fa-shopping-cart"
+                                invisible="order_count == 0">
+                            <field name="order_count" widget="statinfo" string="Orders"/>
+                        </button>
+                    </div>
+
+                    <div class="oe_title">
+                        <h1><field name="name" placeholder="My Salla Store"/></h1>
+                    </div>
+
+                    <group>
+                        <group string="🔌 API Credentials">
+                            <field name="client_id" placeholder="App Client ID from Salla Partners Portal"/>
+                            <field name="client_secret" password="True" placeholder="App Client Secret"/>
+                        </group>
+                        <group string="🏪 Store Information">
+                            <field name="salla_store_id" readonly="1"/>
+                            <field name="salla_store_name" readonly="1"/>
+                            <field name="salla_store_email" readonly="1"/>
+                            <field name="salla_store_domain" readonly="1"/>
+                            <field name="salla_store_currency" readonly="1"/>
+                        </group>
+                    </group>
+
+                    <notebook>
+
+                        <!-- ── Import tab ─────────────────────────────────────── -->
+                        <page string="📥 Import from Salla" name="import">
+                            <div class="alert alert-info" role="alert">
+                                <b>Import data from your Salla store into Odoo.</b>
+                                Click each button or use the bulk import wizard.
+                            </div>
+                            <div class="row mt-3">
+                                <div class="col-md-6">
+                                    <div class="card mb-3">
+                                        <div class="card-body">
+                                            <h6 class="card-title">👥 Customers</h6>
+                                            <button name="action_import_customer_groups"
+                                                    type="object"
+                                                    string="Import Customer Groups"
+                                                    class="btn btn-outline-primary btn-sm me-2"/>
+                                            <button name="action_import_customers"
+                                                    type="object"
+                                                    string="Import Customers"
+                                                    class="btn btn-outline-primary btn-sm"/>
+                                        </div>
+                                    </div>
+                                    <div class="card mb-3">
+                                        <div class="card-body">
+                                            <h6 class="card-title">📦 Products</h6>
+                                            <button name="action_import_brands"
+                                                    type="object"
+                                                    string="Import Brands"
+                                                    class="btn btn-outline-success btn-sm me-2"/>
+                                            <button name="action_import_categories"
+                                                    type="object"
+                                                    string="Import Categories"
+                                                    class="btn btn-outline-success btn-sm me-2"/>
+                                            <button name="action_import_products"
+                                                    type="object"
+                                                    string="Import Products"
+                                                    class="btn btn-outline-success btn-sm"/>
+                                        </div>
+                                    </div>
+                                    <div class="card mb-3">
+                                        <div class="card-body">
+                                            <h6 class="card-title">🛒 Orders</h6>
+                                            <button name="action_import_order_statuses"
+                                                    type="object"
+                                                    string="Import Order Statuses"
+                                                    class="btn btn-outline-warning btn-sm me-2"/>
+                                            <button name="action_import_orders"
+                                                    type="object"
+                                                    string="Import Orders…"
+                                                    class="btn btn-outline-warning btn-sm"/>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="card border-primary mb-3">
+                                        <div class="card-body">
+                                            <h6 class="card-title">⚡ Bulk Import</h6>
+                                            <p class="card-text text-muted small">
+                                                Import multiple data types at once using the wizard.
+                                            </p>
+                                            <button name="action_open_import_wizard"
+                                                    type="object"
+                                                    string="📥 Open Import Wizard"
+                                                    class="btn btn-primary"/>
+                                        </div>
+                                    </div>
+                                    <div class="card border-secondary">
+                                        <div class="card-body">
+                                            <h6 class="card-title">⏰ Sync Statistics</h6>
+                                            <field name="last_product_sync" readonly="1"/>
+                                            <field name="last_customer_sync" readonly="1"/>
+                                            <field name="last_order_sync" readonly="1"/>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </page>
+
+                        <!-- ── Token tab ──────────────────────────────────────── -->
+                        <page string="🔐 Authentication" name="auth">
+                            <div class="alert alert-warning" role="alert">
+                                Tokens are sensitive. Keep your Client Secret private.
+                                Access tokens expire; use "Refresh Token" to extend validity.
+                            </div>
+                            <group>
+                                <field name="access_token" password="True" readonly="1"/>
+                                <field name="refresh_token" password="True" readonly="1"/>
+                                <field name="token_expiry" readonly="1"/>
+                            </group>
+                        </page>
+
+                        <!-- ── Scheduler tab ──────────────────────────────────── -->
+                        <page string="⏰ Auto Sync" name="scheduler">
+                            <group>
+                                <field name="auto_sync_products"/>
+                                <field name="auto_sync_customers"/>
+                                <field name="auto_sync_orders"/>
+                                <field name="auto_sync_interval"/>
+                            </group>
+                            <button name="action_open_scheduler_wizard"
+                                    type="object"
+                                    string="⚙ Configure Scheduler"
+                                    class="btn btn-secondary mt-2"/>
+                        </page>
+
+                        <!-- ── Notes tab ──────────────────────────────────────── -->
+                        <page string="📝 Notes" name="notes">
+                            <field name="note" placeholder="Internal notes…"/>
+                        </page>
+
+                    </notebook>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+
+    <!-- ── Search view ────────────────────────────────────────────────────────── -->
+    <record id="view_salla_instance_search" model="ir.ui.view">
+        <field name="name">salla.instance.search</field>
+        <field name="model">salla.instance</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="name"/>
+                <field name="salla_store_name"/>
+                <filter string="Connected" name="connected"
+                        domain="[('state','=','connected')]"/>
+                <filter string="Not Connected" name="draft"
+                        domain="[('state','=','draft')]"/>
+            </search>
+        </field>
+    </record>
+
+    <!-- ── Action ─────────────────────────────────────────────────────────────── -->
+    <record id="action_salla_instance_list" model="ir.actions.act_window">
+        <field name="name">Salla Instances</field>
+        <field name="res_model">salla.instance</field>
+        <field name="view_mode">list,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Add your first Salla store connection!
+            </p>
+            <p>
+                Create an instance, enter your App Client ID and Secret,
+                then click "Get Token" to authorise Odoo to access your Salla store.
+            </p>
+        </field>
+    </record>
+
+</odoo>

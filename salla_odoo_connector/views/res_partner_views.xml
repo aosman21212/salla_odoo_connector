@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- Extend contact form: add Salla smart button + tab -->
+    <record id="view_partner_form_salla" model="ir.ui.view">
+        <field name="name">res.partner.form.salla</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_partner_form"/>
+        <field name="arch" type="xml">
+
+            <!-- Smart button -->
+            <div name="button_box" position="inside">
+                <button name="action_open_salla"
+                        type="object"
+                        class="oe_stat_button"
+                        icon="fa-shopping-bag"
+                        invisible="not salla_id"
+                        title="Open in Salla">
+                    <div class="o_stat_info">
+                        <span class="o_stat_text">Salla</span>
+                    </div>
+                </button>
+            </div>
+
+            <!-- Hidden field needed for smart button visibility -->
+            <field name="website" position="after">
+                <field name="salla_id" invisible="1"/>
+                <field name="salla_instance_id" invisible="1"/>
+            </field>
+
+            <!-- Salla tab -->
+            <page name="internal_notes" position="after">
+                <page string="🛍 Salla" name="salla_info" invisible="not salla_id">
+                    <group>
+                        <group string="Salla Details">
+                            <field name="salla_id" readonly="1"/>
+                            <field name="salla_instance_id" readonly="1"/>
+                        </group>
+                        <group string="Actions">
+                            <div>
+                                <button name="action_export_to_salla"
+                                        type="object"
+                                        string="📤 Export to Salla"
+                                        class="btn btn-outline-primary btn-sm me-2"/>
+                                <button name="action_open_salla"
+                                        type="object"
+                                        string="🔗 Open in Salla"
+                                        class="btn btn-outline-secondary btn-sm"
+                                        invisible="not salla_id"/>
+                            </div>
+                        </group>
+                    </group>
+                </page>
+            </page>
+
+        </field>
+    </record>
+
+</odoo>

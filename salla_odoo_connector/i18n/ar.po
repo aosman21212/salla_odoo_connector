@@ -1,0 +1,244 @@
+# Arabic translation for Salla Odoo Connector
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 19.0\n"
+"Language: ar\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Plural-Forms: nplurals=6; plural=n==0?0:n==1?1:n==2?2:n%100>=3&&n%100<=10?3:n%100>=11&&n%100<=99?4:5;\n"
+
+msgid "Salla Odoo Connector"
+msgstr "رابط سلة أودو"
+
+msgid "Salla Integration Instance"
+msgstr "اتصال تكامل سلة"
+
+msgid "Salla Instances"
+msgstr "اتصالات سلة"
+
+msgid "Instance Name"
+msgstr "اسم الاتصال"
+
+msgid "Client ID"
+msgstr "معرّف العميل"
+
+msgid "Client Secret"
+msgstr "مفتاح العميل السري"
+
+msgid "Status"
+msgstr "الحالة"
+
+msgid "Not Connected"
+msgstr "غير متصل"
+
+msgid "Connected"
+msgstr "متصل"
+
+msgid "Token Expired"
+msgstr "انتهت صلاحية الرمز"
+
+msgid "Access Token"
+msgstr "رمز الوصول"
+
+msgid "Refresh Token"
+msgstr "رمز التجديد"
+
+msgid "Token Expiry"
+msgstr "انتهاء صلاحية الرمز"
+
+msgid "Salla Store ID"
+msgstr "معرّف متجر سلة"
+
+msgid "Store Name"
+msgstr "اسم المتجر"
+
+msgid "Store Email"
+msgstr "بريد المتجر"
+
+msgid "Store Domain"
+msgstr "نطاق المتجر"
+
+msgid "Currency"
+msgstr "العملة"
+
+msgid "Products"
+msgstr "المنتجات"
+
+msgid "Customers"
+msgstr "العملاء"
+
+msgid "Orders"
+msgstr "الطلبات"
+
+msgid "Categories"
+msgstr "التصنيفات"
+
+msgid "Auto Sync Products"
+msgstr "مزامنة تلقائية للمنتجات"
+
+msgid "Auto Sync Customers"
+msgstr "مزامنة تلقائية للعملاء"
+
+msgid "Auto Sync Orders"
+msgstr "مزامنة تلقائية للطلبات"
+
+msgid "Sync Interval (hours)"
+msgstr "فترة المزامنة (ساعات)"
+
+msgid "Last Order Sync"
+msgstr "آخر مزامنة للطلبات"
+
+msgid "Last Product Sync"
+msgstr "آخر مزامنة للمنتجات"
+
+msgid "Last Customer Sync"
+msgstr "آخر مزامنة للعملاء"
+
+msgid "🔑 Get Token"
+msgstr "🔑 الحصول على الرمز"
+
+msgid "🔄 Refresh Token"
+msgstr "🔄 تجديد الرمز"
+
+msgid "✅ Test Connection"
+msgstr "✅ اختبار الاتصال"
+
+msgid "Token Refreshed"
+msgstr "تم تجديد الرمز"
+
+msgid "Connection Successful"
+msgstr "تم الاتصال بنجاح"
+
+msgid "Import Complete"
+msgstr "اكتمل الاستيراد"
+
+msgid "Import from Salla"
+msgstr "استيراد من سلة"
+
+msgid "📥 Open Import Wizard"
+msgstr "📥 فتح معالج الاستيراد"
+
+msgid "Configure Scheduler"
+msgstr "ضبط الجدولة"
+
+msgid "⚙ Configure Scheduler"
+msgstr "⚙ ضبط الجدولة"
+
+msgid "Salla Brand"
+msgstr "علامة تجارية سلة"
+
+msgid "Brand Name"
+msgstr "اسم العلامة التجارية"
+
+msgid "Brand URL"
+msgstr "رابط العلامة التجارية"
+
+msgid "Salla Brands"
+msgstr "علامات سلة التجارية"
+
+msgid "Salla Order Status"
+msgstr "حالة طلب سلة"
+
+msgid "Status Name"
+msgstr "اسم الحالة"
+
+msgid "Salla Order Statuses"
+msgstr "حالات طلبات سلة"
+
+msgid "Salla Customer ID"
+msgstr "معرّف عميل سلة"
+
+msgid "Salla Instance"
+msgstr "اتصال سلة"
+
+msgid "📤 Export to Salla"
+msgstr "📤 تصدير إلى سلة"
+
+msgid "🔗 Open in Salla"
+msgstr "🔗 فتح في سلة"
+
+msgid "Salla Product ID"
+msgstr "معرّف منتج سلة"
+
+msgid "Salla Status"
+msgstr "حالة سلة"
+
+msgid "Active"
+msgstr "نشط"
+
+msgid "Out of Stock"
+msgstr "نفذت الكمية"
+
+msgid "Hidden"
+msgstr "مخفي"
+
+msgid "Deleted"
+msgstr "محذوف"
+
+msgid "Salla Product URL"
+msgstr "رابط منتج سلة"
+
+msgid "Salla Brand"
+msgstr "علامة سلة التجارية"
+
+msgid "🔄 Refresh from Salla"
+msgstr "🔄 تحديث من سلة"
+
+msgid "Salla Order ID"
+msgstr "معرّف طلب سلة"
+
+msgid "Salla Reference"
+msgstr "مرجع سلة"
+
+msgid "🔗 Open in Salla"
+msgstr "🔗 فتح في سلة"
+
+msgid "📤 Push Status to Salla"
+msgstr "📤 إرسال الحالة إلى سلة"
+
+msgid "Status Pushed"
+msgstr "تم إرسال الحالة"
+
+msgid "Exported"
+msgstr "تم التصدير"
+
+msgid "Synced"
+msgstr "تمت المزامنة"
+
+msgid "Salla: Auto Sync (Products / Customers / Orders)"
+msgstr "سلة: مزامنة تلقائية (منتجات / عملاء / طلبات)"
+
+msgid "Customer Groups"
+msgstr "مجموعات العملاء"
+
+msgid "Brands"
+msgstr "العلامات التجارية"
+
+msgid "Order Statuses"
+msgstr "حالات الطلبات"
+
+msgid "Orders From"
+msgstr "الطلبات من"
+
+msgid "Orders To"
+msgstr "الطلبات حتى"
+
+msgid "📥 Start Import"
+msgstr "📥 بدء الاستيراد"
+
+msgid "Enable Scheduled Sync"
+msgstr "تفعيل المزامنة المجدولة"
+
+msgid "💾 Save Settings"
+msgstr "💾 حفظ الإعدادات"
+
+msgid "Scheduler Updated"
+msgstr "تم تحديث الجدولة"
+
+msgid "Auto-sync settings saved."
+msgstr "تم حفظ إعدادات المزامنة التلقائية."
+
+msgid "Salla Connector"
+msgstr "رابط سلة"
+
+msgid "Configuration"
+msgstr "الإعدادات"

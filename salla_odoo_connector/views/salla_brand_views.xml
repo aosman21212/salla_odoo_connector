@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_salla_brand_list" model="ir.ui.view">
+        <field name="name">salla.brand.list</field>
+        <field name="model">salla.brand</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="name"/>
+                <field name="salla_id"/>
+                <field name="salla_instance_id"/>
+                <field name="salla_url" widget="url"/>
+                <field name="product_count"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_salla_brand_form" model="ir.ui.view">
+        <field name="name">salla.brand.form</field>
+        <field name="model">salla.brand</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <div class="oe_title">
+                        <h1><field name="name"/></h1>
+                    </div>
+                    <group>
+                        <field name="salla_id" readonly="1"/>
+                        <field name="salla_instance_id"/>
+                        <field name="salla_url" widget="url"/>
+                        <field name="product_count" readonly="1"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_salla_brand_list" model="ir.actions.act_window">
+        <field name="name">Salla Brands</field>
+        <field name="res_model">salla.brand</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+</odoo>

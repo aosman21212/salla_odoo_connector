@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_salla_scheduler_wizard_form" model="ir.ui.view">
+        <field name="name">salla.scheduler.wizard.form</field>
+        <field name="model">salla.scheduler.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Configure Salla Scheduler">
+                <group>
+                    <field name="instance_id" readonly="1"/>
+                    <field name="enable_cron"/>
+                </group>
+                <separator string="Auto-Sync Options"/>
+                <group>
+                    <field name="auto_sync_products"/>
+                    <field name="auto_sync_customers"/>
+                    <field name="auto_sync_orders"/>
+                    <field name="auto_sync_interval"/>
+                </group>
+                <footer>
+                    <button name="action_save"
+                            type="object"
+                            string="💾 Save Settings"
+                            class="btn-primary"/>
+                    <button string="Cancel" class="btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+</odoo>

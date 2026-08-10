@@ -1,0 +1,9 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_salla_instance_user,salla.instance user,model_salla_instance,base.group_user,1,0,0,0
+access_salla_instance_manager,salla.instance manager,model_salla_instance,base.group_system,1,1,1,1
+access_salla_brand_user,salla.brand user,model_salla_brand,base.group_user,1,0,0,0
+access_salla_brand_manager,salla.brand manager,model_salla_brand,base.group_system,1,1,1,1
+access_salla_order_status_user,salla.order.status user,model_salla_order_status,base.group_user,1,0,0,0
+access_salla_order_status_manager,salla.order.status manager,model_salla_order_status,base.group_system,1,1,1,1
+access_salla_import_wizard_user,salla.import.wizard user,model_salla_import_wizard,base.group_user,1,1,1,1
+access_salla_scheduler_wizard_user,salla.scheduler.wizard user,model_salla_scheduler_wizard,base.group_user,1,1,1,1

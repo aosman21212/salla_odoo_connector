@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="UTF-8"/>
+<title>Salla Odoo Connector</title>
+<style>
+  :root { --salla:#4E2D8B; --salla2:#6B3FA0; --gold:#FFD700; --teal:#017E84;
+          --success:#28A745; --grey:#6C757D; --light:#F8F9FA; }
+  * { box-sizing:border-box; margin:0; padding:0; }
+  body { font-family:'Segoe UI',Arial,sans-serif; color:#333; background:#fff; }
+
+  /* ── Language switcher ── */
+  #lang-switcher { position:sticky; top:0; z-index:999; background:var(--salla);
+    display:flex; gap:8px; padding:8px 20px; }
+  #lang-switcher button { padding:4px 14px; border:2px solid #fff; border-radius:20px;
+    background:transparent; color:#fff; cursor:pointer; font-size:.85rem; transition:.2s; }
+  #lang-switcher button.active,
+  #lang-switcher button:hover { background:#fff; color:var(--salla); }
+
+  .panel { display:none; } .panel.active { display:block; }
+
+  /* ── Hero ── */
+  .hero { background:linear-gradient(135deg,var(--salla) 0%,var(--teal) 100%);
+    color:#fff; padding:60px 30px; text-align:center; }
+  .hero img.logo { width:100px; border-radius:20px; margin-bottom:20px;
+    box-shadow:0 8px 30px rgba(0,0,0,.3); }
+  .hero h1 { font-size:2.3rem; margin-bottom:10px; }
+  .hero p  { font-size:1.1rem; opacity:.9; max-width:720px; margin:0 auto 20px; }
+  .badge-row { display:flex; gap:10px; justify-content:center; flex-wrap:wrap; }
+  .badge { background:rgba(255,255,255,.2); border:1px solid rgba(255,255,255,.4);
+    border-radius:20px; padding:4px 14px; font-size:.8rem; }
+
+  /* ── Sections ── */
+  .section { padding:50px 30px; max-width:1100px; margin:0 auto; }
+  .section-title { font-size:1.7rem; font-weight:700; color:var(--salla);
+    text-align:center; margin-bottom:10px; }
+  .section-sub { text-align:center; color:var(--grey); margin-bottom:36px; font-size:1rem; }
+
+  /* ── Feature grid ── */
+  .feat-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); gap:20px; }
+  .feat-card { background:var(--light); border-radius:12px; padding:24px 20px;
+    border-left:4px solid var(--salla); transition:.2s; }
+  .feat-card:hover { transform:translateY(-3px); box-shadow:0 6px 20px rgba(78,45,139,.15); }
+  .feat-card .icon { font-size:2rem; margin-bottom:10px; }
+  .feat-card h3 { font-size:1rem; font-weight:700; margin-bottom:6px; color:var(--salla2); }
+  .feat-card p  { font-size:.88rem; line-height:1.5; color:#555; }
+
+  /* ── Screenshots ── */
+  .screenshots { background:var(--light); padding:50px 30px; }
+  .screenshots .wrap { max-width:1100px; margin:0 auto; }
+  .ss-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(480px,1fr)); gap:24px; margin-top:32px; }
+  .ss-card { background:#fff; border-radius:12px; overflow:hidden;
+    box-shadow:0 4px 18px rgba(0,0,0,.10); transition:.2s; }
+  .ss-card:hover { box-shadow:0 8px 30px rgba(78,45,139,.2); transform:translateY(-2px); }
+  .ss-card img { width:100%; display:block; }
+  .ss-caption { padding:14px 16px; border-top:1px solid #eee; }
+  .ss-caption strong { display:block; font-size:.95rem; color:var(--salla); margin-bottom:2px; }
+  .ss-caption span { font-size:.82rem; color:var(--grey); }
+
+  /* ── Setup steps ── */
+  .steps { counter-reset:step; display:flex; flex-direction:column; gap:16px; }
+  .step  { display:flex; gap:16px; align-items:flex-start; }
+  .step-num { min-width:36px; height:36px; border-radius:50%; background:var(--salla);
+    color:#fff; font-weight:700; display:flex; align-items:center; justify-content:center;
+    font-size:.9rem; margin-top:2px; }
+  .step-body h4 { font-size:.98rem; font-weight:700; margin-bottom:4px; color:#222; }
+  .step-body p  { font-size:.88rem; line-height:1.55; color:#555; }
+
+  /* ── Sync table ── */
+  .sync-table { width:100%; border-collapse:collapse; font-size:.9rem; }
+  .sync-table th { background:var(--salla); color:#fff; padding:10px 14px; text-align:left; }
+  .sync-table td { padding:10px 14px; border-bottom:1px solid #eee; }
+  .sync-table tr:hover td { background:var(--light); }
+  .tag { display:inline-block; padding:2px 10px; border-radius:12px; font-size:.75rem;
+    font-weight:700; }
+  .tag.imp { background:#D4EDDA; color:#155724; }
+  .tag.exp { background:#CCE5FF; color:#004085; }
+  .tag.bi  { background:#FFF3CD; color:#856404; }
+  .tag.auto{ background:#F8D7DA; color:#721c24; }
+
+  /* ── Footer ── */
+  .footer { background:var(--salla); color:#ddd; text-align:center; padding:24px 20px; font-size:.85rem; }
+  .footer a { color:var(--gold); text-decoration:none; }
+  .footer a:hover { text-decoration:underline; }
+
+  /* ── RTL panel ── */
+  #ar { direction:rtl; }
+  #ar .feat-card { border-left:none; border-right:4px solid var(--salla); }
+  #ar .step { flex-direction:row-reverse; }
+  #ar .sync-table th,
+  #ar .sync-table td { text-align:right; }
+</style>
+</head>
+<body>
+
+<!-- Language switcher -->
+<div id="lang-switcher">
+  <button class="active" onclick="switchLang('en',this)">🇬🇧 English</button>
+  <button onclick="switchLang('ar',this)">🇸🇦 العربية</button>
+</div>
+
+<!-- ═══════════════════ ENGLISH ═══════════════════ -->
+<div id="en" class="panel active">
+
+  <!-- Hero -->
+  <div class="hero">
+    <img class="logo" src="icon.png" alt="Salla Odoo Connector"/>
+    <h1>🛍 Salla Odoo Connector</h1>
+    <p>Seamlessly synchronise your <strong>Salla</strong> eCommerce store with <strong>Odoo 19</strong> — products, customers, orders and more, all in one place.</p>
+    <div class="badge-row">
+      <span class="badge">✅ Odoo 19.0</span>
+      <span class="badge">🛍 Salla API v2</span>
+      <span class="badge">🔄 Bi-directional Sync</span>
+      <span class="badge">🔐 OAuth 2.0</span>
+      <span class="badge">⏰ Scheduled Cron</span>
+      <span class="badge">🌐 Arabic &amp; English</span>
+    </div>
+  </div>
+
+  <!-- Features -->
+  <div class="section">
+    <div class="section-title">Key Features</div>
+    <div class="section-sub">Everything you need to run Salla and Odoo as one unified platform</div>
+    <div class="feat-grid">
+      <div class="feat-card"><div class="icon">🔐</div><h3>OAuth 2.0 Authentication</h3>
+        <p>Secure one-click token exchange directly from the Odoo instance form — no manual copy-paste of tokens.</p></div>
+      <div class="feat-card"><div class="icon">📦</div><h3>Product Sync</h3>
+        <p>Import &amp; export products, variants, brands and categories. Keep stock and prices in sync automatically.</p></div>
+      <div class="feat-card"><div class="icon">👥</div><h3>Customer Sync</h3>
+        <p>Pull Salla customers into Odoo contacts with their groups (tags), phone and email intact.</p></div>
+      <div class="feat-card"><div class="icon">🛒</div><h3>Order Import</h3>
+        <p>Automatically create Odoo sale orders from Salla, preserving Salla order references and statuses.</p></div>
+      <div class="feat-card"><div class="icon">📤</div><h3>Push Status Back</h3>
+        <p>Update the Salla order status directly from the Odoo sale order — no need to switch dashboards.</p></div>
+      <div class="feat-card"><div class="icon">⏰</div><h3>Scheduled Auto-Sync</h3>
+        <p>Configure an hourly (or custom) cron job to keep all data fresh without any manual intervention.</p></div>
+      <div class="feat-card"><div class="icon">📥</div><h3>Bulk Import Wizard</h3>
+        <p>Pick exactly what to import — products, customers, orders or all — with a single wizard dialog.</p></div>
+      <div class="feat-card"><div class="icon">🏷</div><h3>Brands &amp; Categories</h3>
+        <p>Full support for Salla brands and product categories, mapped to Odoo's product category tree.</p></div>
+    </div>
+  </div>
+
+  <!-- Screenshots -->
+  <div class="screenshots">
+    <div class="wrap">
+      <div class="section-title">Module Screenshots</div>
+      <div class="section-sub">See the connector in action across every part of Odoo</div>
+      <div class="ss-grid">
+
+        <div class="ss-card">
+          <img src="screenshot_01_instance.png" alt="Salla Instance Form"/>
+          <div class="ss-caption">
+            <strong>Salla Instance — Configuration &amp; Import</strong>
+            <span>Manage API credentials, store info, and trigger bulk imports from a single form view.</span>
+          </div>
+        </div>
+
+        <div class="ss-card">
+          <img src="screenshot_02_import_wizard.png" alt="Import Wizard"/>
+          <div class="ss-caption">
+            <strong>Import Wizard</strong>
+            <span>Choose exactly which data to pull — customers, products, orders — with one click.</span>
+          </div>
+        </div>
+
+        <div class="ss-card">
+          <img src="screenshot_03_contact.png" alt="Contact with Salla Tab"/>
+          <div class="ss-caption">
+            <strong>Contact Form — Salla Tab</strong>
+            <span>Each Odoo contact linked to Salla shows its Salla Customer ID and quick export action.</span>
+          </div>
+        </div>
+
+        <div class="ss-card">
+          <img src="screenshot_04_product.png" alt="Product with Salla Tab"/>
+          <div class="ss-caption">
+            <strong>Product Form — Salla Tab</strong>
+            <span>View and manage Salla product ID, status, brand, URL and trigger a refresh or export.</span>
+          </div>
+        </div>
+
+        <div class="ss-card">
+          <img src="screenshot_05_order.png" alt="Sale Order Salla Tab"/>
+          <div class="ss-caption">
+            <strong>Sale Order — Salla Reference &amp; Status</strong>
+            <span>Salla order reference displayed on the sale order; push status back with one button.</span>
+          </div>
+        </div>
+
+        <div class="ss-card">
+          <img src="screenshot_06_scheduler.png" alt="Scheduler Wizard"/>
+          <div class="ss-caption">
+            <strong>Scheduler Wizard — Auto-Sync Settings</strong>
+            <span>Enable automatic sync, choose data types, and set the cron interval in minutes.</span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- Setup Steps -->
+  <div class="section">
+    <div class="section-title">Quick Setup Guide</div>
+    <div class="section-sub">Get connected in under 5 minutes</div>
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-body">
+          <h4>Install the module</h4>
+          <p>Go to <em>Apps → Search "Salla Odoo Connector" → Install</em>. Dependencies (Sale, Stock, Contacts, Accounting) are installed automatically.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-body">
+          <h4>Create a Salla App</h4>
+          <p>Log in to <a href="https://salla.dev" target="_blank">salla.dev</a>, create a new app, and copy the <strong>Client ID</strong> and <strong>Client Secret</strong>. Set the redirect URI to <code>https://your-odoo.com/salla/callback</code>.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-body">
+          <h4>Create a Salla Instance in Odoo</h4>
+          <p>Navigate to <em>Salla Connector → Instances → New</em>. Enter the Client ID &amp; Client Secret, then click <strong>🔑 Get Token</strong> to authorise via OAuth 2.0.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">4</div>
+        <div class="step-body">
+          <h4>Test the connection</h4>
+          <p>Click <strong>✅ Test Connection</strong>. If successful, the store name, email and domain are populated automatically.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">5</div>
+        <div class="step-body">
+          <h4>Run the Import Wizard</h4>
+          <p>Click <strong>📥 Open Import Wizard</strong> on the Import tab. Select the data types to import and click <em>Start Import</em>.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">6</div>
+        <div class="step-body">
+          <h4>(Optional) Enable Auto-Sync</h4>
+          <p>Click <strong>⚙ Configure Scheduler</strong>, toggle <em>Enable Scheduled Sync</em>, choose your interval, and save. A background cron job will keep everything in sync.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Sync matrix -->
+  <div class="section">
+    <div class="section-title">Data Sync Matrix</div>
+    <div class="section-sub">What flows where — at a glance</div>
+    <table class="sync-table">
+      <tr><th>Data</th><th>Salla → Odoo</th><th>Odoo → Salla</th><th>Auto-Sync</th></tr>
+      <tr><td>👥 Customers</td><td><span class="tag imp">Import</span></td><td><span class="tag exp">Export</span></td><td><span class="tag auto">✓ Cron</span></td></tr>
+      <tr><td>🏷 Customer Groups / Tags</td><td><span class="tag imp">Import</span></td><td>—</td><td><span class="tag auto">✓ Cron</span></td></tr>
+      <tr><td>📦 Products</td><td><span class="tag imp">Import</span></td><td><span class="tag exp">Export</span></td><td><span class="tag auto">✓ Cron</span></td></tr>
+      <tr><td>📂 Product Categories</td><td><span class="tag imp">Import</span></td><td><span class="tag exp">Export</span></td><td>—</td></tr>
+      <tr><td>🏅 Brands</td><td><span class="tag imp">Import</span></td><td>—</td><td>—</td></tr>
+      <tr><td>🛒 Orders</td><td><span class="tag imp">Import</span></td><td>—</td><td><span class="tag auto">✓ Cron</span></td></tr>
+      <tr><td>📋 Order Statuses</td><td><span class="tag imp">Import</span></td><td><span class="tag exp">Push</span></td><td>—</td></tr>
+    </table>
+  </div>
+
+  <!-- Footer -->
+  <div class="footer">
+    <p>Developed by <a href="https://leapai.ai" target="_blank">leapai.ai</a> &nbsp;|&nbsp;
+       Support: <a href="mailto:abdzoro89@gmail.com">abdzoro89@gmail.com</a> &nbsp;|&nbsp;
+       License: LGPL-3 &nbsp;|&nbsp; Odoo 19.0</p>
+  </div>
+
+</div><!-- /en -->
+
+<!-- ═══════════════════ ARABIC ═══════════════════ -->
+<div id="ar" class="panel">
+
+  <div class="hero">
+    <img class="logo" src="icon.png" alt="رابط سلة أودو"/>
+    <h1>🛍 رابط سلة أودو</h1>
+    <p>مزامنة سلسة بين متجرك على <strong>سلة</strong> و<strong>أودو 19</strong> — المنتجات والعملاء والطلبات وأكثر، كل شيء في مكان واحد.</p>
+    <div class="badge-row">
+      <span class="badge">✅ أودو 19.0</span>
+      <span class="badge">🛍 Salla API v2</span>
+      <span class="badge">🔄 مزامنة ثنائية</span>
+      <span class="badge">🔐 OAuth 2.0</span>
+      <span class="badge">⏰ مهام مجدولة</span>
+      <span class="badge">🌐 عربي وإنجليزي</span>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">المميزات الرئيسية</div>
+    <div class="section-sub">كل ما تحتاجه لتشغيل سلة وأودو كمنصة موحدة واحدة</div>
+    <div class="feat-grid">
+      <div class="feat-card"><div class="icon">🔐</div><h3>مصادقة OAuth 2.0</h3>
+        <p>تبادل آمن للرمز المميز بنقرة واحدة مباشرة من نموذج اتصال أودو.</p></div>
+      <div class="feat-card"><div class="icon">📦</div><h3>مزامنة المنتجات</h3>
+        <p>استيراد وتصدير المنتجات والتصنيفات والعلامات التجارية مع تحديث المخزون والأسعار تلقائيًا.</p></div>
+      <div class="feat-card"><div class="icon">👥</div><h3>مزامنة العملاء</h3>
+        <p>جلب عملاء سلة إلى جهات اتصال أودو مع مجموعاتهم وبياناتهم كاملة.</p></div>
+      <div class="feat-card"><div class="icon">🛒</div><h3>استيراد الطلبات</h3>
+        <p>إنشاء أوامر بيع أودو تلقائيًا من طلبات سلة مع الحفاظ على مراجع سلة وحالاتها.</p></div>
+      <div class="feat-card"><div class="icon">📤</div><h3>إرسال الحالة إلى سلة</h3>
+        <p>تحديث حالة طلب سلة مباشرة من أمر البيع في أودو دون الحاجة للتبديل بين المنصات.</p></div>
+      <div class="feat-card"><div class="icon">⏰</div><h3>مزامنة تلقائية مجدولة</h3>
+        <p>إعداد مهمة مجدولة (كرون) كل ساعة أو بفترة مخصصة للحفاظ على تحديث البيانات دائمًا.</p></div>
+      <div class="feat-card"><div class="icon">📥</div><h3>معالج الاستيراد الجماعي</h3>
+        <p>اختر ما تريد استيراده بالضبط — منتجات، عملاء، طلبات أو كل شيء — بنافذة واحدة.</p></div>
+      <div class="feat-card"><div class="icon">🏷</div><h3>العلامات التجارية والتصنيفات</h3>
+        <p>دعم كامل لعلامات سلة التجارية وتصنيفاتها مع ربطها بشجرة تصنيفات المنتجات في أودو.</p></div>
+    </div>
+  </div>
+
+  <div class="screenshots">
+    <div class="wrap">
+      <div class="section-title">لقطات شاشة من الوحدة</div>
+      <div class="section-sub">شاهد الرابط في العمل عبر كل أقسام أودو</div>
+      <div class="ss-grid">
+        <div class="ss-card">
+          <img src="screenshot_01_instance.png" alt="نموذج اتصال سلة"/>
+          <div class="ss-caption">
+            <strong>اتصال سلة — الإعدادات والاستيراد</strong>
+            <span>إدارة بيانات API ومعلومات المتجر وبدء الاستيراد الجماعي من نموذج واحد.</span>
+          </div>
+        </div>
+        <div class="ss-card">
+          <img src="screenshot_02_import_wizard.png" alt="معالج الاستيراد"/>
+          <div class="ss-caption">
+            <strong>معالج الاستيراد</strong>
+            <span>اختر البيانات التي تريد جلبها — عملاء، منتجات، طلبات — بنقرة واحدة.</span>
+          </div>
+        </div>
+        <div class="ss-card">
+          <img src="screenshot_03_contact.png" alt="جهة الاتصال مع تبويب سلة"/>
+          <div class="ss-caption">
+            <strong>نموذج جهة الاتصال — تبويب سلة</strong>
+            <span>كل جهة اتصال مرتبطة بسلة تعرض معرّفها في سلة وأزرار إجراءات سريعة.</span>
+          </div>
+        </div>
+        <div class="ss-card">
+          <img src="screenshot_04_product.png" alt="المنتج مع تبويب سلة"/>
+          <div class="ss-caption">
+            <strong>نموذج المنتج — تبويب سلة</strong>
+            <span>عرض وإدارة معرّف المنتج في سلة والحالة والعلامة التجارية والرابط.</span>
+          </div>
+        </div>
+        <div class="ss-card">
+          <img src="screenshot_05_order.png" alt="أمر البيع مع تبويب سلة"/>
+          <div class="ss-caption">
+            <strong>أمر البيع — مرجع سلة والحالة</strong>
+            <span>مرجع طلب سلة ظاهر على أمر البيع مع زر لإرسال الحالة مباشرة.</span>
+          </div>
+        </div>
+        <div class="ss-card">
+          <img src="screenshot_06_scheduler.png" alt="معالج الجدولة"/>
+          <div class="ss-caption">
+            <strong>معالج الجدولة — إعدادات المزامنة التلقائية</strong>
+            <span>تفعيل المزامنة التلقائية واختيار البيانات وضبط فترة التشغيل بدقائق.</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">دليل الإعداد السريع</div>
+    <div class="section-sub">الاتصال في أقل من 5 دقائق</div>
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">١</div>
+        <div class="step-body">
+          <h4>تثبيت الوحدة</h4>
+          <p>انتقل إلى <em>التطبيقات ← ابحث عن "Salla Odoo Connector" ← ثبّت</em>. يتم تثبيت الاعتماديات تلقائيًا.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">٢</div>
+        <div class="step-body">
+          <h4>إنشاء تطبيق في سلة</h4>
+          <p>سجّل الدخول إلى <a href="https://salla.dev" target="_blank">salla.dev</a>، أنشئ تطبيقًا جديدًا، وانسخ <strong>Client ID</strong> و<strong>Client Secret</strong>. اضبط رابط إعادة التوجيه على <code>https://your-odoo.com/salla/callback</code>.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">٣</div>
+        <div class="step-body">
+          <h4>إنشاء اتصال سلة في أودو</h4>
+          <p>انتقل إلى <em>رابط سلة ← الاتصالات ← جديد</em>. أدخل Client ID و Client Secret ثم انقر <strong>🔑 الحصول على الرمز</strong> للتفويض عبر OAuth 2.0.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">٤</div>
+        <div class="step-body">
+          <h4>اختبار الاتصال</h4>
+          <p>انقر <strong>✅ اختبار الاتصال</strong>. عند النجاح، يُعبأ اسم المتجر والبريد والنطاق تلقائيًا.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">٥</div>
+        <div class="step-body">
+          <h4>تشغيل معالج الاستيراد</h4>
+          <p>انقر <strong>📥 فتح معالج الاستيراد</strong> في تبويب الاستيراد. اختر أنواع البيانات وانقر <em>بدء الاستيراد</em>.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">٦</div>
+        <div class="step-body">
+          <h4>(اختياري) تفعيل المزامنة التلقائية</h4>
+          <p>انقر <strong>⚙ ضبط الجدولة</strong>، فعّل المزامنة المجدولة، اختر الفترة، ثم احفظ. ستعمل مهمة خلفية تلقائيًا.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">جدول مزامنة البيانات</div>
+    <div class="section-sub">ما الذي يتدفق — وأين</div>
+    <table class="sync-table">
+      <tr><th>البيانات</th><th>سلة → أودو</th><th>أودو → سلة</th><th>مزامنة تلقائية</th></tr>
+      <tr><td>👥 العملاء</td><td><span class="tag imp">استيراد</span></td><td><span class="tag exp">تصدير</span></td><td><span class="tag auto">✓ كرون</span></td></tr>
+      <tr><td>🏷 مجموعات العملاء</td><td><span class="tag imp">استيراد</span></td><td>—</td><td><span class="tag auto">✓ كرون</span></td></tr>
+      <tr><td>📦 المنتجات</td><td><span class="tag imp">استيراد</span></td><td><span class="tag exp">تصدير</span></td><td><span class="tag auto">✓ كرون</span></td></tr>
+      <tr><td>📂 تصنيفات المنتجات</td><td><span class="tag imp">استيراد</span></td><td><span class="tag exp">تصدير</span></td><td>—</td></tr>
+      <tr><td>🏅 العلامات التجارية</td><td><span class="tag imp">استيراد</span></td><td>—</td><td>—</td></tr>
+      <tr><td>🛒 الطلبات</td><td><span class="tag imp">استيراد</span></td><td>—</td><td><span class="tag auto">✓ كرون</span></td></tr>
+      <tr><td>📋 حالات الطلبات</td><td><span class="tag imp">استيراد</span></td><td><span class="tag exp">إرسال</span></td><td>—</td></tr>
+    </table>
+  </div>
+
+  <div class="footer">
+    <p>طوّرته <a href="https://leapai.ai" target="_blank">leapai.ai</a> &nbsp;|&nbsp;
+       الدعم: <a href="mailto:abdzoro89@gmail.com">abdzoro89@gmail.com</a> &nbsp;|&nbsp;
+       الترخيص: LGPL-3 &nbsp;|&nbsp; أودو 19.0</p>
+  </div>
+
+</div><!-- /ar -->
+
+<script>
+function switchLang(lang, btn) {
+  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('#lang-switcher button').forEach(b => b.classList.remove('active'));
+  document.getElementById(lang).classList.add('active');
+  btn.classList.add('active');
+  document.documentElement.setAttribute('dir', lang === 'ar' ? 'rtl' : 'ltr');
+  document.documentElement.setAttribute('lang', lang);
+}
+</script>
+</body>
+</html>

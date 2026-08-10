@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_salla_import_wizard_form" model="ir.ui.view">
+        <field name="name">salla.import.wizard.form</field>
+        <field name="model">salla.import.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Import from Salla">
+                <group>
+                    <field name="instance_id" options="{'no_create': True}"/>
+                    <field name="operation" widget="radio"/>
+                </group>
+
+                <separator string="Select Data to Import"/>
+
+                <group>
+                    <group string="👥 Customers">
+                        <field name="import_customer_groups"/>
+                        <field name="import_customers"/>
+                    </group>
+                    <group string="📦 Products">
+                        <field name="import_brands"/>
+                        <field name="import_categories"/>
+                        <field name="import_products"/>
+                    </group>
+                </group>
+
+                <group>
+                    <group string="🛒 Orders">
+                        <field name="import_order_statuses"/>
+                        <field name="import_orders"/>
+                    </group>
+                    <group string="📅 Order Date Filter"
+                           invisible="not import_orders">
+                        <field name="order_date_from"/>
+                        <field name="order_date_to"/>
+                    </group>
+                </group>
+
+                <footer>
+                    <button name="action_import"
+                            type="object"
+                            string="📥 Start Import"
+                            class="btn-primary"/>
+                    <button string="Cancel" class="btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+</odoo>
