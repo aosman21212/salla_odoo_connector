@@ -36,7 +36,7 @@ class SallaSchedulerWizard(models.TransientModel):
             'auto_sync_interval': self.auto_sync_interval,
         })
         # Update the cron job interval
-        cron = self.env.ref('salla_odoo_connector.ir_cron_salla_sync', raise_if_not_found=False)
+        cron = self.env.ref('leapai_salla_odoo_connector.ir_cron_salla_sync', raise_if_not_found=False)
         if cron:
             cron.write({
                 'active': self.enable_cron,

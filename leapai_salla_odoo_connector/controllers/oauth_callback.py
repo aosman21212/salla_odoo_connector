@@ -17,7 +17,7 @@ class SallaOAuthCallback(http.Controller):
         if error:
             _logger.warning('Salla OAuth error: %s', error)
             return request.redirect(
-                '/web#action=salla_odoo_connector.action_salla_instance_list'
+                '/web#action=leapai_salla_odoo_connector.action_salla_instance_list'
                 '&notification=oauth_error',
             )
 

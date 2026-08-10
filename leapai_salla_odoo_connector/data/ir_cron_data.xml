@@ -3,7 +3,7 @@
 
     <record id="ir_cron_salla_sync" model="ir.cron">
         <field name="name">Salla: Auto Sync (Products / Customers / Orders)</field>
-        <field name="model_id" ref="salla_odoo_connector.model_salla_instance"/>
+        <field name="model_id" ref="leapai_salla_odoo_connector.model_salla_instance"/>
         <field name="state">code</field>
         <field name="code">model._cron_sync_all()</field>
         <field name="interval_number">1</field>

@@ -6,7 +6,7 @@
         id="menu_salla_root"
         name="Salla Connector"
         sequence="80"
-        web_icon="salla_odoo_connector,static/description/icon.png"/>
+        web_icon="leapai_salla_odoo_connector,static/description/icon.png"/>
 
     <!-- ── Configuration sub-menu ────────────────────────────────────────────── -->
     <menuitem
