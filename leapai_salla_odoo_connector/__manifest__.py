@@ -8,8 +8,8 @@ Import/export customers, products, orders, categories and more.
     ''',
     'author': 'leapai.ai',
     'website': 'https://leapai.ai',
-    'maintainer': 'a.osman@bab.com.sa',
-    'support': 'abdzoro89@gmail.com',
+    'maintainer': 'Abdulkaraim Osman',
+    'support': 'sales@leapai.ai',
     'category': 'eCommerce/eCommerce',
     'license': 'LGPL-3',
     'depends': [
