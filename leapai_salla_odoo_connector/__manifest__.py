@@ -1,3 +1,15 @@
+# -*- coding: utf-8 -*-
+# =============================================================================
+#  Salla Odoo Connector
+# -----------------------------------------------------------------------------
+#  Location  : King Abdulaziz Branch Road, Riyadh, Saudi Arabia
+#  Email     : sales@leapai.ai
+#  Phone     : +966 53 553 3627
+#  Website   : https://leapai.ai
+#  Developer : Abdulkaraim Osman — Tech Manager | Backend Engineer | DevOps Engineer
+#              at Bab International Corp For Specialized Services
+#  LinkedIn  : https://www.linkedin.com/in/abdulkaraim-o-385b7a110/
+# =============================================================================
 {
     'name': 'Salla Odoo Connector',
     'version': '19.0.1.0.0',
@@ -7,9 +19,9 @@ Bidirectional integration between Salla eCommerce platform and Odoo 19.
 Import/export customers, products, orders, categories and more.
     ''',
     'author': 'leapai.ai',
-    'website': 'https://leapai.ai',
     'maintainer': 'Abdulkaraim Osman',
     'support': 'sales@leapai.ai',
+    'website': 'https://leapai.ai',
     'category': 'eCommerce/eCommerce',
     'license': 'LGPL-3',
     'depends': [
